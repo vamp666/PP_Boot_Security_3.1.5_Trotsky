@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>User page</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<header th:replace="fragments/header :: header"/>
+<div class="my-4"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col bg-white px-0">
+            <div class="d-flex flex-column">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <button class="nav-link text-start active" id="v-pills-admin-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-admin" type="button" role="tab" aria-controls="v-pills-admin"
+                            aria-selected="true">Admin
+                    </button>
+                    <button class="nav-link text-start" id="v-pills-user-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-user"
+                            type="button" role="tab" aria-controls="v-pills-user" aria-selected="false">User
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-10 vh-100 bg-light">
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-admin" role="tabpanel"
+                     aria-labelledby="v-pills-admin-tab">
+                    <div th:replace="fragments/adminInfo :: adminInfo"/>
+                </div>
+                <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
+                    <div th:replace="fragments/userInfo :: userInfo"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="deleteForm">
+    <div class="modal fade" id="delete-modal" aria-hidden="true" role="dialog" aria-labelledby="deleteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body fw-bold">
+                    <div style="text-align: center">
+                        <div class="row justify-content-center align-items-center">
+                            <form class="text-center" id="deleteFormBody">
+                                <div class="form-group font-weight-bold">
+                                    <div class="form-group m-3">
+                                        <label for="idDelete"
+                                               class="col-form-label">ID</label>
+                                        <input type="text" class="form-control"
+                                               id="idDelete"
+                                               name="id" disabled/>
+                                    </div>
+
+                                    <div class="form-group m-3">
+                                        <label for="firstNameDelete" class="col-form-label">First
+                                            name</label>
+                                        <input type="text" class="form-control"
+                                               id="firstNameDelete"
+                                               name="firstName" disabled/>
+                                    </div>
+
+                                    <div class="form-group m-3">
+                                        <label for="lastNameDelete" class="col-form-label">Last
+                                            name</label>
+                                        <input type="text" class="form-control"
+                                               id="lastNameDelete"
+                                               name="lastName" disabled/>
+                                    </div>
+
+                                    <div class="form-group m-3">
+                                        <label for="ageDelete"
+                                               class="col-form-label">Age</label>
+                                        <input type="text" class="form-control"
+                                               id="ageDelete"
+                                               name="age" disabled/>
+                                    </div>
+
+                                    <div class="form-group m-3">
+                                        <label for="emailDelete"
+                                               class="col-form-label">Email</label>
+                                        <input type="text" class="form-control"
+                                               id="emailDelete"
+                                               name="email" disabled/>
+                                    </div>
+
+                                    <div class="form-group m-3" readonly="readonly">
+                                        <label for="rolesDelete">Role</label>
+                                        <select class="form-select w-100 "
+                                                size="2"
+                                                id="rolesDelete"
+                                                name="userRoles"
+                                                disabled="true">
+                                        </select>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close
+                                        </button>
+                                        <input type="submit" class="btn btn-danger"
+                                               value="Delete" onclick="deleteUser()"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="editForm">
+    <div class="modal fade" id="edit-modal" aria-hidden="true"
+         role="dialog" aria-labelledby="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit user</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body fw-bold">
+                    <div style="text-align: center">
+                        <div class="row justify-content-center align-items-center">
+                            <form class="text-center" id="editFormBody">
+                                <div class="form-group font-weight-bold">
+                                    <div class="form-group m-3">
+                                        <label for="idEdit"
+                                               class="col-form-label">ID</label>
+                                        <input type="text"
+                                               class="form-control" id="idEdit"
+                                               name="id"
+                                               disabled/>
+                                    </div>
+
+                                    <div class="form-group m-3">
+                                        <label for="firstNameEdit">First
+                                            name</label>
+                                        <input type="text" class="form-control"
+                                               id="firstNameEdit"
+                                               name="firstName"/>
+                                    </div>
+
+                                    <div class="form-group m-3">
+                                        <label for="lastNameEdit" class="col-form-label">Last
+                                            name</label>
+                                        <input type="text" class="form-control"
+                                               id="lastNameEdit"
+                                               name="lastName"/>
+                                    </div>
+
+                                    <div class="form-group m-3">
+                                        <label for="ageEdit"
+                                               class="col-form-label">Age</label>
+                                        <input type="text" class="form-control"
+                                               id="ageEdit"
+                                               name="age"/>
+                                    </div>
+
+                                    <div class="form-group m-3">
+                                        <label for="emailEdit"
+                                               class="col-form-label">Email</label>
+                                        <input type="text" class="form-control"
+                                               id="emailEdit"
+                                               name="email"/>
+                                    </div>
+
+                                    <div class="form-group m-3">
+                                        <label for="passwordEdit"
+                                               class="col-form-label">Password</label>
+                                        <input type="password" class="form-control"
+                                               id="passwordEdit"
+                                               name="password"
+                                               autocomplete="on"
+                                               disabled/>
+                                    </div>
+
+                                    <div class="form-group m-3" readonly="readonly">
+                                        <label for="rolesEdit">Role</label>
+                                        <select class="form-select w-100" multiple
+                                                size="2"
+                                                id="rolesEdit"
+                                                name="roles">
+                                        </select>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close
+                                        </button>
+                                        <input type="submit" class="btn btn-danger"
+                                               value="Edit" onclick="updateUser()"/>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/app.js}"></script>
+<script th:inline="javascript">
+    let userId = [[${user.id}]]
+</script>
+<script>
+    fillPrincipalTable()
+    fillUsersTable()
+    listenDeleteModal()
+    listenUpdateModal()
+</script>
+</body>
+</html>
+
